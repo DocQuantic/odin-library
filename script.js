@@ -24,13 +24,13 @@ function addBookToLibrary(title, author, pages, isRead){
 }
 
 function createBookCard(book){
-    book.read ? readState="Read" : readState="Not read yet";
-
     const library = document.querySelector(".library");
-    console.log(library);
+
+    book.isRead ? readState="Read" : readState="Not read yet";
+    book.isRead ? readBtnId="read-button" : readBtnId="not-read-button"
 
     const newCard = document.createElement("div");
-    newCard.classList.add("book");
+    newCard.classList.add("book-card");
     newCard.setAttribute("data-attribute", book.id);
     const bookTitle = document.createElement("h2");
     bookTitle.innerText = book.title;
@@ -42,9 +42,11 @@ function createBookCard(book){
     cardButtons.classList.add("buttons");
     const readButton = document.createElement("button");
     readButton.setAttribute("type", "button");
+    readButton.setAttribute("id", readBtnId);
     readButton.innerHTML = readState;
     const removeButton = document.createElement("button");
     removeButton.setAttribute("type", "button");
+    removeButton.setAttribute("id", "remove-button");
     removeButton.innerHTML = "Remove";
 
     cardButtons.appendChild(readButton);
@@ -58,7 +60,16 @@ function createBookCard(book){
     library.appendChild(newCard);
 }
 
+function clearLibrary(){
+    const cards = document.querySelectorAll(".book-card");
+    for(let i=0; i<cards.length; i++){
+        cards[i].remove();
+    }
+}
+
 function updateLibrary(){
+    clearLibrary();
+
     for(let i=0; i<myLibrary.length; i++){
         const book = myLibrary[i];
         createBookCard(book);
@@ -66,5 +77,7 @@ function updateLibrary(){
 }
 
 addBookToLibrary("The Witcher", "Me", 234, true);
-console.log(myLibrary);
-console.log(myLibrary[0].info())
+addBookToLibrary("The Witcher2", "Me", 234, true);
+addBookToLibrary("The Witcher3", "Me", 234, false);
+
+console.log(myLibrary)
