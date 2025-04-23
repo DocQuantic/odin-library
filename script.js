@@ -6,12 +6,10 @@ function Book(title, author, pages, isRead, id){
     this.pages = pages;
     this.isRead = isRead;
     this.id = id;
-    
-    this.info = function() {
-      this.read ? readState="read" : readState="not read yet";
-      info = `${this.title} by ${this.author}, ${this.pages} pages, ${readState}`;
-      return info;
-    }
+}
+
+Book.prototype.switchReadState = function() {
+    this.isRead ? this.isRead=false : this.isRead=true;
 }
 
 function addBookToLibrary(title, author, pages, isRead){
@@ -43,6 +41,7 @@ function createBookCard(book){
     const readButton = document.createElement("button");
     readButton.setAttribute("type", "button");
     readButton.setAttribute("id", readBtnId);
+    readButton.setAttribute("data-attribute", book.id);
     readButton.innerHTML = readState;
     const removeButton = document.createElement("button");
     removeButton.setAttribute("type", "button");
@@ -68,6 +67,17 @@ function createBookCard(book){
             return book.id === bookId;
         })
         myLibrary.splice(bookIndex, 1);
+        updateLibrary();
+    })
+
+    readButton.addEventListener("click", function() {
+        bookId = this.getAttribute("data-attribute");
+        
+        cardToRemove = document.querySelector(`.book-card[data-attribute="${bookId}"]`);
+        bookIndex = myLibrary.findIndex((book) => {
+            return book.id === bookId;
+        })
+        myLibrary[bookIndex].switchReadState();
         updateLibrary();
     })
 }
@@ -99,9 +109,3 @@ addBookBtn.addEventListener("click", function(event) {
 
     addBookToLibrary(bookTitle, bookAuthor, bookPages, bookRead);
 })
-
-
-
-addBookToLibrary("The Witcher", "Me", 234, true);
-addBookToLibrary("The Witcher2", "Me", 234, true);
-addBookToLibrary("The Witcher3", "Me", 234, false);
