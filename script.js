@@ -76,8 +76,18 @@ function updateLibrary(){
     }
 }
 
+addBookBtn = document.querySelector("#add-book-btn");
+addBookBtn.addEventListener("click", function(event) {
+    event.preventDefault();
+    
+    bookTitle = document.querySelector("#book-title").value;
+    bookAuthor = document.querySelector("#book-author").value;
+    bookPages = document.querySelector("#book-pages").value;
+    bookRead = document.querySelector("input[name='book-read']:checked").value;
+
+    addBookToLibrary(bookTitle, bookAuthor, bookPages, bookRead);
+})
+
 addBookToLibrary("The Witcher", "Me", 234, true);
 addBookToLibrary("The Witcher2", "Me", 234, true);
 addBookToLibrary("The Witcher3", "Me", 234, false);
-
-console.log(myLibrary)
