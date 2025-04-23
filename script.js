@@ -47,6 +47,7 @@ function createBookCard(book){
     const removeButton = document.createElement("button");
     removeButton.setAttribute("type", "button");
     removeButton.setAttribute("id", "remove-button");
+    removeButton.setAttribute("data-attribute", book.id);
     removeButton.innerHTML = "Remove";
 
     cardButtons.appendChild(readButton);
@@ -58,6 +59,17 @@ function createBookCard(book){
     newCard.appendChild(cardButtons);
 
     library.appendChild(newCard);
+
+    removeButton.addEventListener("click", function(event) {
+        bookId = this.getAttribute("data-attribute");
+        
+        cardToRemove = document.querySelector(`.book-card[data-attribute="${bookId}"]`);
+        bookIndex = myLibrary.findIndex((book) => {
+            return book.id === bookId;
+        })
+        myLibrary.splice(bookIndex, 1);
+        updateLibrary();
+    })
 }
 
 function clearLibrary(){
@@ -87,6 +99,8 @@ addBookBtn.addEventListener("click", function(event) {
 
     addBookToLibrary(bookTitle, bookAuthor, bookPages, bookRead);
 })
+
+
 
 addBookToLibrary("The Witcher", "Me", 234, true);
 addBookToLibrary("The Witcher2", "Me", 234, true);
